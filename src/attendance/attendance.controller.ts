@@ -1,4 +1,4 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, Inject, Post } from '@nestjs/common';
 import { IAttendanceService } from './interfaces/IAttendanceService.interface';
 
 @Controller('attendance')
@@ -7,4 +7,10 @@ export class AttendanceController {
     @Inject('ATTENDANCE_SERVICE')
     private readonly attendanceService: IAttendanceService
   ) { }
+
+
+  @Post()
+  async getAttendance() {
+
+  }
 }
