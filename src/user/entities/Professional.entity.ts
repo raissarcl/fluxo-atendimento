@@ -1,9 +1,9 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
 import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
-import { Attendance } from "src/attendance/entities/Attendance.entity";
+import { Task } from "src/task/entities/Task.entity";
 
 @Entity()
-export class Client {
+export class Professional {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,7 +22,7 @@ export class Client {
   @Column()
   password: string;
 
-  attendances: Attendance[];
+  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;
