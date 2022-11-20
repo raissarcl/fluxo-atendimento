@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AttendanceModule } from './attendance/attendance.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -16,8 +18,18 @@ import { TaskModule } from './task/task.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [],
+      autoLoadEntities: true,
       synchronize: true,
+      /*
+      IN PRODUCTION OPTION (OPÇÕES EM PRODUÇÃO)
+      synchronize: false,
+      migrations: [
+        'dist/src/db/migrations/*.js
+      ],
+      cli: {
+        migrationsDir: 'src/db/migrations
+      }
+      */
     }),
     AttendanceModule,
     UserModule,
