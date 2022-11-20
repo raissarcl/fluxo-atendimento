@@ -2,7 +2,7 @@ import { hashSync } from "bcrypt";
 import { DataSource } from "typeorm";
 import { v4 as uuidv4 } from 'uuid';
 
-enum UsersTypeRoles {
+enum UsersRoleTypes {
   USER = "user",
   ADMIN = "admin",
 }
@@ -22,7 +22,7 @@ async function createAdmin() {
 
   await AppDataSource.query(
     `INSERT INTO ATTENDANT(id, role, name, email, password, created_at, updated_at)
-    values ('${uuidv4()}', '${UsersTypeRoles.ADMIN}', 'admin', 'admin@admin.com', '${hashSync('admin', 8)}', 'now()', 'now()')
+    values ('${uuidv4()}', '${UsersRoleTypes.ADMIN}', 'admin', 'admin@admin.com', '${hashSync('admin', 8)}', 'now()', 'now()')
     `
   );
 
