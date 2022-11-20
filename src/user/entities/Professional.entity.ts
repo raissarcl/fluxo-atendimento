@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
-import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
+import { UsersRoleTypes } from "../enums/UsersRoleTypes.enum";
 import { Task } from "src/task/entities/Task.entity";
 import { Attendance } from "src/attendance/entities/Attendance.entity";
 import { Exclude } from "class-transformer";
@@ -14,9 +14,9 @@ export class Professional {
   @Exclude()
   @Column({
     type: 'enum',
-    enum: UsersTypeRoles
+    enum: UsersRoleTypes
   })
-  role: UsersTypeRoles;
+  role: UsersRoleTypes;
 
   @Column()
   name: string;

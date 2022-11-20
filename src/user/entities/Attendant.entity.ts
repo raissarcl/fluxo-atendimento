@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
+import { UsersRoleTypes } from "../enums/UsersRoleTypes.enum";
 
 @Entity()
 export class Attendant {
@@ -8,9 +8,9 @@ export class Attendant {
 
   @Column({
     type: 'enum',
-    enum: UsersTypeRoles
+    enum: UsersRoleTypes
   })
-  role: UsersTypeRoles;
+  role: UsersRoleTypes;
 
   @Column()
   name: string;
