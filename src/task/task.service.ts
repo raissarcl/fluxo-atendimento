@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppError } from 'src/errors/AppError.error';
-import { Client, Professional } from 'src/user/entities';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Task } from './entities/Task.entity';
@@ -16,11 +15,11 @@ export class TaskService implements ITaskService {
     private readonly userService: UserService,
   ) { }
 
-  async createTasks(clientName: string, professionalName: string, taskArray: Task[]): Promise<Task[]> {
+  async createTasks(clientName: string, professionalName: string, taskArray: any[]): Promise<Task[]> {
     const clientUser = await this.userService.getClientByName(clientName);
     const professionalUser = await this.userService.getProfessionalByName(professionalName);
 
-    if (!professionalUser) throw new AppError("Professional doesn't exist");
+    if (!clientUser || !professionalUser) throw new AppError("One or more accounts don't exist");
 
     const percentageProfessional = professionalUser.percentage;
 
@@ -28,7 +27,7 @@ export class TaskService implements ITaskService {
       const valueProfessional = task.value * (percentageProfessional / 100);
 
       const taskReady = this.taskRepository.create({
-        type: task.type,
+        type: task.taskType,
         value: task.value,
         amountMinutes: task.amountMinutes,
         user: clientUser,
