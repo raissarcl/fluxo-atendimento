@@ -4,7 +4,7 @@ import { AppError } from 'src/errors/AppError.error';
 import { hashPassword } from 'src/utils/bcrypt';
 import { Repository } from 'typeorm';
 import { Attendant, Client, Professional } from './entities';
-import { UsersTypeRoles } from './enums/UserTypeRoles.enum';
+import { UsersRoleTypes } from './enums/UsersRoleTypes.enum';
 import { IUserService } from './interfaces/IUserService.interface';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UserService implements IUserService {
     const hashedPassword = await hashPassword(password);
 
     const client = this.clientRepository.create({
-      role: UsersTypeRoles.USER,
+      role: UsersRoleTypes.USER,
       name,
       email,
       password: hashedPassword,
@@ -47,7 +47,7 @@ export class UserService implements IUserService {
     const hashedPassword = await hashPassword(password);
 
     const professional = this.professionalRepository.create({
-      role: UsersTypeRoles.USER,
+      role: UsersRoleTypes.USER,
       name,
       email,
       percentage,
