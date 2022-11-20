@@ -1,7 +1,9 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard';
+import { RolesGuard, Roles, Role } from 'src/auth/roles';
 import { ITaskService } from './interfaces/ITaskService.interface';
 
-@Controller('task')
+@Controller('tasks')
 export class TaskController {
 
   constructor(
@@ -9,5 +11,14 @@ export class TaskController {
     private readonly taskService: ITaskService
   ) { }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get()
+  async getAllTasks() {
+    return await this.taskService.getAllTasks();
+  }
 
 }
+
+
+
