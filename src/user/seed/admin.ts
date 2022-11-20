@@ -3,8 +3,7 @@ import { DataSource } from "typeorm";
 import { v4 as uuidv4 } from 'uuid';
 
 enum UsersTypeRoles {
-  CLIENT = "client",
-  PROFESSIONAL = "professional",
+  USER = "user",
   ADMIN = "admin",
 }
 
