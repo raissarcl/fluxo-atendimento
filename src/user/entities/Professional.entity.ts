@@ -2,12 +2,16 @@ import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGenerat
 import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
 import { Task } from "src/task/entities/Task.entity";
 import { Attendance } from "src/attendance/entities/Attendance.entity";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class Professional {
+
+  @Exclude()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Exclude()
   @Column({
     type: 'enum',
     enum: UsersTypeRoles
@@ -21,10 +25,11 @@ export class Professional {
   email: string;
 
   @Column()
-  password: string;
+  percentage: number;
 
-  @Column('boolean', { default: false })
-  isBusy: boolean;
+  @Exclude()
+  @Column()
+  password: string;
 
   @OneToMany((type) => Task, (task) => task.professional)
   tasks: Task[];
@@ -32,9 +37,16 @@ export class Professional {
   @OneToMany((type) => Attendance, (attendance) => attendance.professional)
   attendance: Attendance[];
 
+  @Exclude()
   @CreateDateColumn()
   created_at: Date;
 
+
+  @Exclude()
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor(partial: Partial<Professional>) {
+    Object.assign(this, partial);
+  }
 }

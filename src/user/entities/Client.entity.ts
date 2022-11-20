@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
 import { Attendance } from "src/attendance/entities/Attendance.entity";
 import { Exclude } from "class-transformer";
+import { Task } from "src/task/entities/Task.entity";
 
 @Entity()
 export class Client {
@@ -27,8 +28,11 @@ export class Client {
   @Exclude()
   password: string;
 
-  @OneToMany(() => Attendance, (Attendance) => Attendance.client)
+  @OneToMany((type) => Attendance, (Attendance) => Attendance.client)
   attendances: Attendance[];
+
+  @OneToMany((type) => Task, (task) => task.user)
+  tasks: Task[];
 
   @CreateDateColumn()
   @Exclude()
