@@ -1,30 +1,48 @@
+import { Exclude } from "class-transformer";
 import { Client, Professional } from "src/user/entities";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { TaskTypes } from "./TaskTypes.entity";
 
 @Entity()
 export class Task {
 
+  @Exclude()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => TaskTypes)
-  @JoinColumn()
-  taskType: TaskTypes;
+  @Column()
+  type: string;
 
-  @ManyToOne(() => Client, (client) => client.id)
+  @Column('money')
+  value: number;
+
+  @Column()
+  amountMinutes: number;
+
+  @Exclude()
+  @Column()
+  percentageProfessional: number;
+
+
+  @Exclude()
+  @Column()
+  valueProfessional: number;
+
+  @ManyToOne(() => Client, (client) => client.tasks)
   user: Client;
 
   @ManyToOne(() => Professional, (professional) => professional.tasks)
   professional: Professional;
 
-  @Column('boolean', { default: false })
-  isActive: boolean;
-
+  @Exclude()
   @CreateDateColumn()
   created_at: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor(partial: Partial<Task>) {
+    Object.assign(this, partial);
+  }
 
 }
