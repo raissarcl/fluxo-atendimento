@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Param, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard';
 import { RolesGuard, Roles, Role } from 'src/auth/roles';
 import { ITaskService } from 'src/task/interfaces/ITaskService.interface';
@@ -22,12 +22,15 @@ export class AttendanceController {
     const client = req.user;
 
     const readyTasks = await this.taskService.createTasks(client.name, professional, tasks);
+
     const attendance = await this.attendanceService.createAttendance(client.name, professional, readyTasks);
 
-    const partialAttendance = new Attendance(attendance).client
-
-    return partialAttendance;
-  }
+    return {
+      msg: 'Created attendance',
+      id: attendance.id,
+      isActive: attendance.isActive
+    }
+  };
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -36,11 +39,10 @@ export class AttendanceController {
 
     const attendance = await this.attendanceService.startAttendance(id);
 
-    const partialAttendance = new Attendance(attendance);
-
     return {
       msg: "Attendance started",
-      partialAttendance,
+      id: attendance.id,
+      isActive: attendance.isActive,
     };
   }
 
@@ -51,15 +53,14 @@ export class AttendanceController {
 
     const attendance = await this.attendanceService.stopAttendance(id);
 
-    attendance.totalComission
 
     return {
       msg: "Attendance and resume",
       client: attendance.client,
-      duration: attendance.totalDuration,
-      commission: attendance.totalComission,
+      duration: `${attendance.totalDuration} minutos totais`,
+      commission: `${attendance.totalComission} reais de comissão`,
+      isActive: attendance.isActive
     };
   }
-
 
 }

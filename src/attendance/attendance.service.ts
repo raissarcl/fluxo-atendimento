@@ -19,12 +19,12 @@ export class AttendanceService implements IAttendanceService {
   async createAttendance(clientName: string, professionalName: string, tasks: Task[]): Promise<Attendance> {
 
     const client = await this.userService.getClientByName(clientName);
-    const professional = await this.userService.getProfessionalByEmail(professionalName);
+    const professional = await this.userService.getProfessionalByName(professionalName);
 
     if (!client || !professional) throw new AppError("One or more accounts don't exist");
 
     const totals = tasks.reduce((acc, cur) => {
-      acc.totalComission += cur.amountMinutes;
+      acc.totalComission += cur.valueProfessional;
       acc.totalDuration += cur.amountMinutes;
 
       return acc;
@@ -40,6 +40,8 @@ export class AttendanceService implements IAttendanceService {
       totalDuration: totals.totalDuration,
       totalComission: totals.totalComission
     });
+
+    await this.attendanceRepository.save(attendance);
 
     return attendance;
   }
@@ -59,6 +61,8 @@ export class AttendanceService implements IAttendanceService {
       isActive: true
     });
 
+    await this.attendanceRepository.save(attendance);
+
     return attendance;
   }
 
@@ -72,6 +76,8 @@ export class AttendanceService implements IAttendanceService {
     Object.assign(attendance, {
       isActive: false
     });
+
+    await this.attendanceRepository.save(attendance);
 
     return attendance;
   }
