@@ -12,7 +12,7 @@ export class Task {
   @Column()
   type: string;
 
-  @Column('money')
+  @Column()
   value: number;
 
   @Column()
@@ -21,7 +21,6 @@ export class Task {
   @Exclude()
   @Column()
   percentageProfessional: number;
-
 
   @Exclude()
   @Column()

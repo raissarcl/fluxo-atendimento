@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
-import { UsersTypeRoles } from "../enums/UserTypeRoles.enum";
+import { UsersRoleTypes } from "../enums/UsersRoleTypes.enum";
 import { Attendance } from "src/attendance/entities/Attendance.entity";
 import { Exclude } from "class-transformer";
 import { Task } from "src/task/entities/Task.entity";
@@ -13,10 +13,10 @@ export class Client {
 
   @Column({
     type: 'enum',
-    enum: UsersTypeRoles
+    enum: UsersRoleTypes
   })
   @Exclude()
-  role: UsersTypeRoles;
+  role: UsersRoleTypes;
 
   @Column()
   name: string;

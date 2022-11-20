@@ -2,19 +2,19 @@ import { Exclude } from "class-transformer";
 import { Task } from "src/task/entities/Task.entity";
 import { Client, Professional } from "src/user/entities";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ExclusionMetadata } from "typeorm/metadata/ExclusionMetadata";
 
 @Entity()
 export class Attendance {
 
-  @Exclude()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne((type) => Client, (client) => client.attendances)
+  @Exclude()
   client: Client;
 
   @ManyToOne((type) => Professional, (professional) => professional.attendance)
+  @Exclude()
   professional: Professional;
 
   @OneToMany((type) => Task, (task) => task.id)
@@ -26,7 +26,6 @@ export class Attendance {
   @Column()
   totalDuration: number;
 
-  @Exclude()
   @Column()
   totalComission: number;
 
