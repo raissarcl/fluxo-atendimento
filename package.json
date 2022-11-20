@@ -9,7 +9,7 @@
     "commit": "cz",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "bd:seed": "ts-node src/user/seed/admin.ts",
+    "db:seed": "ts-node src/user/seed/admin.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
