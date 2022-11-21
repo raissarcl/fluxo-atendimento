@@ -9,6 +9,7 @@
     "commit": "cz",
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "docker:up": "docker compose up -d",
     "db:seed": "ts-node src/user/seed/admin.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
