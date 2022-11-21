@@ -1,4 +1,5 @@
 import { Body, ClassSerializerInterceptor, Controller, forwardRef, Get, Inject, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBasicAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard';
 import { LocalAuthGuard } from 'src/auth/guards/localAuth.guard';
@@ -10,6 +11,8 @@ import { CreateProfessionalDto } from './dtos/createProfessional.dto';
 import { Client, Professional } from './entities';
 import { IUserService } from './interfaces/IUserService.interface';
 
+@ApiBasicAuth()
+@ApiTags('User')
 @Controller('user')
 export class UserController {
 
@@ -20,28 +23,35 @@ export class UserController {
     private readonly authService: AuthService
   ) { }
 
-  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({ status: 201, description: 'Client created' })
   @Post()
   async createClient(@Body() { name, email, password }: CreateClientDto) {
     const client = await this.userService.createClient(name, email, password);
 
-    const partialClient = new Client(client);
-
-    return partialClient;
+    return {
+      message: "Client created",
+      name: client.name,
+      email: client.email,
+    };
   }
 
+  @ApiResponse({ status: 201, description: 'Create professional' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('/professional')
   async createProfessional(@Body() { name, email, password, percentage }: CreateProfessionalDto) {
     const professional = await this.userService.createProfessional(name, email, password, percentage);
 
-    const partialProfessional = new Professional(professional);
-
-    return partialProfessional;
+    return {
+      message: 'Professional created',
+      name: professional.name,
+      email: professional.email,
+      TaskPercentage: professional.percentage,
+    };
   }
 
+  @ApiResponse({ status: 200, description: 'Login successful' })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
@@ -49,16 +59,40 @@ export class UserController {
     return this.authService.login(req.user);
   }
 
+  @ApiResponse({ status: 200, description: 'Profile returned' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Get('/profile')
-  async getProfile(@Req() req) {
+  @Get('/client/profile')
+  async getClientProfile(@Req() req) {
     const { email } = req.user;
 
-    const user = await this.userService.getClientByEmail(email);
+    const client = await this.userService.getClientByEmail(email);
 
-    const partialUser = new Client(user);
+    return {
+      message: "Your profile",
+      name: client.id,
+      email: client.email,
+      attendances: client.attendances,
+      tasks: client.tasks
+    };
+  }
 
-    return partialUser;
+  @ApiResponse({ status: 200, description: 'Profile returned' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @UseGuards(JwtAuthGuard)
+  @Get('/professional/profile')
+  async getProfessionalProfile(@Req() req) {
+    const { email } = req.user;
+
+    const professional = await this.userService.getProfessionalByEmail(email);
+
+    return {
+      message: "Your profile",
+      name: professional.id,
+      email: professional.email,
+      tasks: professional.tasks,
+      taskPercentage: professional.percentage,
+      attendances: professional.attendances,
+    };
   }
 }

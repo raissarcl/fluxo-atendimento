@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { Client, Professional } from "src/user/entities";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -5,43 +6,44 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, Prim
 @Entity()
 export class Task {
 
-  @Exclude()
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty()
   @Column()
   type: string;
 
+  @ApiProperty()
   @Column()
   value: number;
 
+  @ApiProperty()
   @Column()
   amountMinutes: number;
 
-  @Exclude()
+  @ApiProperty()
   @Column()
   percentageProfessional: number;
 
-  @Exclude()
+  @ApiProperty()
   @Column()
   valueProfessional: number;
 
+  @ApiProperty()
   @ManyToOne(() => Client, (client) => client.tasks)
   user: Client;
 
+  @ApiProperty()
   @ManyToOne(() => Professional, (professional) => professional.tasks)
   professional: Professional;
 
-  @Exclude()
+  @ApiProperty()
   @CreateDateColumn()
   created_at: Date;
 
-  @Exclude()
+  @ApiProperty()
   @UpdateDateColumn()
   updated_at: Date;
-
-  constructor(partial: Partial<Task>) {
-    Object.assign(this, partial);
-  }
 
 }

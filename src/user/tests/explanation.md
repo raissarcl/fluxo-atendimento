@@ -1,0 +1,1 @@
+Os testes estão comentados e incompletos por ter havido um problema com a nova versão 0.3 do TypeORM em relação a sua integração com o Jest/NestJs e uso com os testes, precisei mudar toda a minha estratégia de escrita porque estava enviável, infelizmente não foi a tempo o suficiente para completá-lo. Abrirei uma Issue no repositório para registrar o problema enfrentado.

@@ -3,46 +3,49 @@ import { UsersRoleTypes } from "../enums/UsersRoleTypes.enum";
 import { Attendance } from "src/attendance/entities/Attendance.entity";
 import { Exclude } from "class-transformer";
 import { Task } from "src/task/entities/Task.entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Client {
 
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
-  @Exclude()
   id: string;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: UsersRoleTypes
   })
-  @Exclude()
   role: UsersRoleTypes;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column({ unique: true })
   email: string;
 
+  @ApiProperty()
   @Column()
-  @Exclude()
   password: string;
 
+  @ApiProperty()
   @OneToMany((type) => Attendance, (Attendance) => Attendance.client)
   attendances: Attendance[];
 
+  @ApiProperty()
   @OneToMany((type) => Task, (task) => task.user)
   tasks: Task[];
 
+  @ApiProperty()
   @CreateDateColumn()
-  @Exclude()
   created_at: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
-  @Exclude()
   updated_at: Date;
 
-  constructor(partial: Partial<Client>) {
-    Object.assign(this, partial);
-  }
+
 }
