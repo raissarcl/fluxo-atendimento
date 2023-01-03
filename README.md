@@ -5,6 +5,8 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
+## Resumo
+Fluxo de atendimentos com serviços e pagamento. Há um funcionamento de login com autenticação e autorização para contas dependendo do seu nível de acesso.
 
 ## Installation
 
